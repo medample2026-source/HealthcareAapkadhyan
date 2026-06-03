@@ -30,10 +30,20 @@ const partnerInquiryRoutes = require("./src/routes/partnerInquiryRoutes");
 
 const app = express();
 
-const allowedOrigins = (process.env.CLIENT_URL || "")
-  .split(",")
-  .map((origin) => origin.trim())
-  .filter(Boolean);
+// ==========================
+// ALLOWED ORIGINS
+// ==========================
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "https://healthcare-aapkadhyan.vercel.app",
+  ...(process.env.CLIENT_URL || "")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean),
+];
+
+console.log("Allowed CORS Origins:", allowedOrigins);
 
 // ==========================
 // DATABASE CONNECTION
@@ -43,20 +53,35 @@ connectDB();
 // ==========================
 // SECURITY MIDDLEWARES
 // ==========================
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+  }),
+);
 
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      // Allow tools like Postman, mobile apps, server-to-server requests
+      if (!origin) {
         return callback(null, true);
       }
 
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      console.log("Blocked by CORS:", origin);
       return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
+
+// Preflight requests
+app.options("*", cors());
 
 app.use(express.json({ limit: "10kb" }));
 app.use(cookieParser());
@@ -74,6 +99,20 @@ app.use(
     },
   }),
 );
+
+// ==========================
+// HEALTH CHECK
+// ==========================
+app.get("/", (req, res) => {
+  res.send("Healthcare backend API running successfully");
+});
+
+app.get("/api/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Healthcare backend API running successfully",
+  });
+});
 
 // ==========================
 // ROUTES
@@ -96,20 +135,6 @@ app.use("/api/medicine-requests", medicineRequestRoutes);
 app.use("/api/medical-owner-dashboard", medicalOwnerDashboardRoutes);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/partner-inquiries", partnerInquiryRoutes);
-
-// ==========================
-// HEALTH CHECK
-// ==========================
-app.get("/", (req, res) => {
-  res.send("Healthcare backend API running successfully");
-});
-
-app.get("/api/health", (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "Healthcare backend API running successfully",
-  });
-});
 
 // ==========================
 // 404 HANDLER
