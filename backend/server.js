@@ -81,8 +81,8 @@ app.use(
   }),
 );
 
-// Preflight requests
-app.options("*", cors());
+// Preflight requests for Express 5. Bare "*" is invalid in path-to-regexp v8.
+app.options("/{*splat}", cors());
 
 app.use(express.json({ limit: "10kb" }));
 app.use(cookieParser());
