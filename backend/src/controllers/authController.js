@@ -12,7 +12,7 @@ const {
   sendRefreshCookie,
   clearRefreshCookie,
 } = require("../utils/sendCookie");
-const { addEmailJob } = require("../jobs/emailQueue");
+const sendAuthEmail = require("../utils/sendAuthEmail");
 const {
   verificationEmail,
   welcomeEmail,
@@ -82,7 +82,7 @@ const queueVerificationEmail = async (user, rawToken) => {
     verifyUrl,
   });
 
-  await addEmailJob({
+  await sendAuthEmail({
     to: user.email,
     ...email,
   });
@@ -169,7 +169,7 @@ exports.verifyEmail = asyncHandler(async (req, res) => {
   await user.save();
 
   if (user.email) {
-    await addEmailJob({
+    await sendAuthEmail({
       to: user.email,
       ...welcomeEmail({ fullName: user.fullName }),
     });
@@ -314,7 +314,7 @@ exports.forgotPassword = asyncHandler(async (req, res) => {
     resetUrl,
   });
 
-  await addEmailJob({
+  await sendAuthEmail({
     to: email,
     ...emailPayload,
   });
