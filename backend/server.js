@@ -8,6 +8,7 @@ const rateLimit = require("express-rate-limit");
 const morgan = require("morgan");
 
 const connectDB = require("./src/config/db");
+const errorMiddleware = require("./src/middleware/errorMiddleware");
 
 const contactRoutes = require("./src/routes/contactRoutes");
 const authRoutes = require("./src/routes/authRoutes");
@@ -145,6 +146,8 @@ app.use((req, res) => {
     message: "Route not found",
   });
 });
+
+app.use(errorMiddleware);
 
 const PORT = process.env.PORT || 5000;
 

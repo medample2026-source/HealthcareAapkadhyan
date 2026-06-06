@@ -49,6 +49,15 @@ const userSchema = new mongoose.Schema(
 
     googleId: {
       type: String,
+      sparse: true,
+    },
+
+    avatar: {
+      type: String,
+    },
+
+    profileImage: {
+      type: String,
     },
 
     isEmailVerified: {
@@ -86,12 +95,16 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+
+    lastLoginAt: {
+      type: Date,
+    },
   },
   { timestamps: true },
 );
 
 userSchema.pre("save", async function () {
-  if (!this.isModified("password")) return;
+  if (!this.isModified("password") || !this.password) return;
 
   this.password = await bcrypt.hash(this.password, 12);
 });
@@ -99,5 +112,10 @@ userSchema.pre("save", async function () {
 userSchema.methods.comparePassword = async function (enteredPassword) {
   return bcrypt.compare(enteredPassword, this.password);
 };
+
+userSchema.index({ googleId: 1 }, { sparse: true });
+userSchema.index({ role: 1 });
+userSchema.index({ emailVerificationToken: 1 }, { sparse: true });
+userSchema.index({ passwordResetToken: 1 }, { sparse: true });
 
 module.exports = mongoose.model("User", userSchema);

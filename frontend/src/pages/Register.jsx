@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   HeartPulse,
   User,
@@ -16,6 +16,8 @@ import {
 } from "lucide-react";
 import API from "../api/axios";
 import { BRAND_LOGO_URL, BRAND_NAME } from "../constants/brand";
+import { useAuth } from "../context/AuthContext";
+import GoogleAuthButton from "../components/common/GoogleAuthButton";
 
 const roles = [
   {
@@ -47,6 +49,9 @@ const roles = [
 const approvalRequiredRoles = ["doctor", "hospitalAdmin", "medicalOwner"];
 
 const Register = () => {
+  const { googleLogin } = useAuth();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -86,6 +91,23 @@ const Register = () => {
     return "";
   };
 
+  const getDashboardPath = (role) => {
+    switch (role) {
+      case "patient":
+        return "/patient-dashboard";
+      case "doctor":
+        return "/doctor-dashboard";
+      case "hospitalAdmin":
+        return "/hospital-dashboard";
+      case "medicalOwner":
+        return "/medical-dashboard";
+      case "superAdmin":
+        return "/super-admin-dashboard";
+      default:
+        return "/";
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -118,6 +140,27 @@ const Register = () => {
     } catch (err) {
       setError(
         err.response?.data?.message || "Registration failed. Please try again.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleCredential = async (credential) => {
+    setError("");
+    setSuccessMessage("");
+
+    try {
+      setLoading(true);
+      const user = await googleLogin({
+        credential,
+        role: formData.role,
+      });
+      navigate(getDashboardPath(user.role), { replace: true });
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          "Google signup failed. Please try again.",
       );
     } finally {
       setLoading(false);
@@ -339,6 +382,13 @@ const Register = () => {
                 {loading ? "Creating account..." : "Create Account"}
               </button>
             </form>
+
+            <div className="mt-5">
+              <GoogleAuthButton
+                onCredential={handleGoogleCredential}
+                text="signup_with"
+              />
+            </div>
 
             <p className="mt-6 text-center text-sm text-slate-600">
               Already have an account?{" "}

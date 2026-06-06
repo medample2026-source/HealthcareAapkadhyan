@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const { getAccessSecret } = require("../utils/generateTokens");
 
 exports.protect = async (req, res, next) => {
   try {
@@ -18,7 +19,7 @@ exports.protect = async (req, res, next) => {
       });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, getAccessSecret());
 
     const user = await User.findById(decoded.id);
 
@@ -58,7 +59,7 @@ exports.optionalProtect = async (req, res, next) => {
       return next();
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, getAccessSecret());
 
     const user = await User.findById(decoded.id);
 

@@ -3,37 +3,32 @@ const {
   register,
   verifyEmail,
   login,
+  googleAuth,
   forgotPassword,
   resetPassword,
   logout,
   refreshToken,
+  me,
 } = require("../controllers/authController");
 
 const { protect } = require("../middleware/authMiddleware");
 const { authorizeRoles } = require("../middleware/roleMiddleware");
+const { authLimiter } = require("../middleware/rateLimiter");
 
 const router = express.Router();
+
+router.use(authLimiter);
 
 router.post("/register", register);
 router.get("/verify-email/:token", verifyEmail);
 router.post("/login", login);
+router.post("/google", googleAuth);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password/:token", resetPassword);
 router.post("/refresh-token", refreshToken);
 router.post("/logout", logout);
 
-router.get("/me", protect, (req, res) => {
-  res.status(200).json({
-    user: {
-      id: req.user._id,
-      fullName: req.user.fullName,
-      email: req.user.email,
-      phone: req.user.phone,
-      role: req.user.role,
-      isApproved: req.user.isApproved,
-    },
-  });
-});
+router.get("/me", protect, me);
 
 router.get(
   "/patient-dashboard",

@@ -3,10 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { HeartPulse, Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { BRAND_LOGO_URL, BRAND_NAME } from "../constants/brand";
+import GoogleAuthButton from "../components/common/GoogleAuthButton";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, googleLogin } = useAuth();
 
   const [formData, setFormData] = useState({
     emailOrPhone: "",
@@ -81,6 +82,22 @@ const Login = () => {
     } catch (err) {
       setError(
         err.response?.data?.message || "Login failed. Please try again.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleCredential = async (credential) => {
+    setError("");
+
+    try {
+      setLoading(true);
+      const user = await googleLogin({ credential });
+      navigate(getDashboardPath(user.role), { replace: true });
+    } catch (err) {
+      setError(
+        err.response?.data?.message || "Google login failed. Please try again.",
       );
     } finally {
       setLoading(false);
@@ -222,6 +239,10 @@ const Login = () => {
                 {loading ? "Logging in..." : "Login Securely"}
               </button>
             </form>
+
+            <div className="mt-5">
+              <GoogleAuthButton onCredential={handleGoogleCredential} />
+            </div>
 
             <p className="mt-6 text-center text-sm text-slate-600">
               Don&apos;t have an account?{" "}
