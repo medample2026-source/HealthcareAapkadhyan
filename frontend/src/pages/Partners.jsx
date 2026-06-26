@@ -106,9 +106,8 @@ const Partners = () => {
           <div className="rounded-[2.5rem] bg-gradient-to-br from-slate-950 via-cyan-950 to-emerald-800 p-8 text-white shadow-2xl shadow-cyan-100 md:p-10">
             <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-black text-cyan-100">
               <Handshake size={18} />
-              Partner With AapkaDhyan
+              Partner With मेड Ample
             </div>
-
             <h1 className="text-4xl font-black leading-tight md:text-6xl">
               Build better healthcare access with us.
             </h1>
@@ -238,7 +237,7 @@ const Partners = () => {
                 onChange={handleChange}
                 rows="5"
                 required
-                placeholder="Tell us how your organization wants to collaborate with AapkaDhyan..."
+                placeholder="Tell us how your organization wants to collaborate with मेड Ample..."
                 className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold outline-none transition focus:border-cyan-400 focus:bg-white focus:ring-4 focus:ring-cyan-100"
               />
             </div>
@@ -260,7 +259,11 @@ const Partners = () => {
               disabled={loading}
               className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-cyan-600 to-emerald-500 px-6 py-4 text-sm font-black text-white shadow-xl shadow-cyan-100 transition hover:scale-[1.01] disabled:opacity-60"
             >
-              {loading ? <Loader2 className="animate-spin" size={19} /> : <Send size={19} />}
+              {loading ? (
+                <Loader2 className="animate-spin" size={19} />
+              ) : (
+                <Send size={19} />
+              )}
               Submit Partnership Enquiry
             </button>
           </form>

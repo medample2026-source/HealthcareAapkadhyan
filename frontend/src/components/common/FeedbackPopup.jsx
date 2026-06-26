@@ -152,9 +152,7 @@ const FeedbackPopup = () => {
                     <button
                       key={rating}
                       type="button"
-                      onClick={() =>
-                        setForm((prev) => ({ ...prev, rating }))
-                      }
+                      onClick={() => setForm((prev) => ({ ...prev, rating }))}
                       className={`flex h-11 w-11 items-center justify-center rounded-2xl border transition ${
                         Number(form.rating) >= rating
                           ? "border-amber-200 bg-amber-50 text-amber-500"
@@ -177,7 +175,7 @@ const FeedbackPopup = () => {
                   onChange={handleChange}
                   rows="4"
                   required
-                  placeholder="What did you like about AapkaDhyan?"
+                  placeholder="What did you like about मेड Ample?"
                   className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold outline-none transition focus:border-cyan-400 focus:bg-white focus:ring-4 focus:ring-cyan-100"
                 />
               </div>
@@ -198,7 +196,14 @@ const FeedbackPopup = () => {
   );
 };
 
-const InputField = ({ label, name, value, onChange, placeholder, required }) => {
+const InputField = ({
+  label,
+  name,
+  value,
+  onChange,
+  placeholder,
+  required,
+}) => {
   return (
     <div>
       <label className="mb-2 block text-sm font-bold text-slate-700">

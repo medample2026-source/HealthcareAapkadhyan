@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const slides = [
-   {
+  {
     id: 1,
     image:
       "https://res.cloudinary.com/davsexxnb/image/upload/q_auto/f_auto/v1779608331/ChatGPT_Image_May_24_2026_01_06_01_PM_r3qgcz.png",
@@ -10,8 +10,8 @@ const slides = [
     description:
       "Connecting families with secure, reliable, and compassionate healthcare services anytime, anywhere.",
     badge: "Trusted",
-        badgeColor: "bg-blue-500",
-    herobtn: 'Become our Family',
+    badgeColor: "bg-blue-500",
+    herobtn: "Become our Family",
   },
   {
     id: 2,
@@ -21,8 +21,8 @@ const slides = [
     description:
       "Advanced healthcare security, patient trust, and protected medical services built for peace of mind.",
     badge: "Secure",
-      badgeColor: "bg-green-500",
-    herobtn: 'Terms & Security',
+    badgeColor: "bg-green-500",
+    herobtn: "Terms & Security",
   },
   {
     id: 3,
@@ -32,15 +32,15 @@ const slides = [
     description:
       "Efficient hospital operations, seamless patient experience, and professional care management under one platform.",
     badge: "Premium",
-      badgeColor: "bg-emerald-500",
-    herobtn: 'Find Best Hospitals',
+    badgeColor: "bg-emerald-500",
+    herobtn: "Find Best Hospitals",
     link: "/hospitals",
   },
   {
     id: 4,
     image:
       "https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=1600&auto=format&fit=crop",
-    title: "Partner With AapkaDhyan",
+    title: "Partner With मेड Ample",
     description:
       "Collaborate with us as an organization, company, NGO, corporate wellness team, or healthcare technology partner.",
     badge: "Partnership",

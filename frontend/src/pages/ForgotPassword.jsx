@@ -53,11 +53,11 @@ const ForgotPassword = () => {
       <div className="relative mx-auto flex min-h-[70vh] max-w-6xl items-center justify-center">
         <div className="w-full max-w-md rounded-[2rem] border border-white/70 bg-white/85 p-6 shadow-2xl shadow-cyan-100/70 backdrop-blur-xl sm:p-8">
           <div className="mb-8 text-center">
-            <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-3xl bg-white shadow-lg shadow-cyan-100">
+            <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-3xl bg-white shadow-lg shadow-cyan-100">
               <img
                 src={BRAND_LOGO_URL}
                 alt={`${BRAND_NAME} Logo`}
-                className="h-16 w-16 object-contain"
+                className="h-20 w-20 object-contain"
               />
             </div>
 

@@ -67,16 +67,16 @@ const Navbar = () => {
     <nav className="fixed left-0 top-0 z-50 w-full border-b border-white/20 bg-white/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-5">
         <Link to="/" className="flex shrink-0 items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm">
             <img
               src={BRAND_LOGO_URL}
               alt={`${BRAND_NAME} Logo`}
-              className="h-11 w-11 object-contain"
+              className="h-[3.25rem] w-[3.25rem] object-contain"
             />
           </div>
 
           <div>
-            <h1 className="text-xl font-black text-slate-900">{BRAND_NAME}</h1>
+            <h1 className="text-2xl font-black text-slate-900">{BRAND_NAME}</h1>
             <p className="text-[11px] font-semibold text-slate-500">
               Smart Healthcare
             </p>

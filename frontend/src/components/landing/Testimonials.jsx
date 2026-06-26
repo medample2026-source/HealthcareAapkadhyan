@@ -37,7 +37,7 @@ const Testimonials = () => {
             <h2 className="mt-4 max-w-2xl text-3xl font-extrabold leading-tight text-slate-950 sm:text-4xl lg:text-5xl">
               Real feedback from{" "}
               <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
-                people using AapkaDhyan.
+                people using मेड Ample.
               </span>
             </h2>
           </div>

@@ -268,13 +268,15 @@ const DashboardLayout = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-cyan-50 to-emerald-50">
       <div className="sticky top-0 z-40 flex items-center justify-between border-b border-white/60 bg-white/80 px-4 py-4 backdrop-blur-xl lg:hidden">
-        <div className="flex items-center gap-2 font-bold text-slate-900">
-          <img
-            src={BRAND_LOGO_URL}
-            alt={`${BRAND_NAME} Logo`}
-            className="h-10 w-10 object-contain"
-          />
-          {BRAND_NAME}
+        <div className="flex items-center gap-3 font-bold text-slate-900">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm">
+            <img
+              src={BRAND_LOGO_URL}
+              alt={`${BRAND_NAME} Logo`}
+              className="h-11 w-11 object-contain"
+            />
+          </div>
+          <span>{BRAND_NAME}</span>
         </div>
 
         <button
@@ -292,16 +294,16 @@ const DashboardLayout = () => {
         }`}
       >
         <div className="mb-8 flex items-center gap-3">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white shadow-sm">
+          <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-white shadow-sm">
             <img
               src={BRAND_LOGO_URL}
               alt={`${BRAND_NAME} Logo`}
-              className="h-14 w-14 object-contain"
+              className="h-[4.5rem] w-[4.5rem] object-contain"
             />
           </div>
 
           <div>
-            <h2 className="text-lg font-bold text-slate-900">{BRAND_NAME}</h2>
+            <h2 className="text-xl font-bold text-slate-900">{BRAND_NAME}</h2>
             <p className="text-xs font-medium capitalize text-slate-500">
               {user?.role} panel
             </p>

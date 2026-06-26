@@ -57,16 +57,16 @@ const Footer = () => {
         <div className="grid gap-10 lg:grid-cols-[1.2fr_2fr]">
           <div>
             <Link to="/" className="inline-flex items-center gap-4">
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white shadow-lg shadow-cyan-900/30">
+              <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-white shadow-lg shadow-cyan-900/30">
                 <img
                   src={BRAND_LOGO_URL}
                   alt={`${BRAND_NAME} Logo`}
-                  className="h-14 w-14 object-contain"
+                  className="h-[4.5rem] w-[4.5rem] object-contain"
                 />
               </div>
 
               <div>
-                <h2 className="text-2xl font-black">{BRAND_NAME}</h2>
+                <h2 className="text-3xl font-black">{BRAND_NAME}</h2>
                 <p className="text-xs font-semibold text-cyan-200">
                   Smart Healthcare Platform
                 </p>
@@ -74,13 +74,13 @@ const Footer = () => {
             </Link>
 
             <p className="mt-5 max-w-md text-sm leading-7 text-slate-300">
-              {BRAND_NAME} connects patients, doctors, hospitals, medical stores,
-              emergency support, reports, and healthcare partners in one secure
-              digital ecosystem.
+              {BRAND_NAME} connects patients, doctors, hospitals, medical
+              stores, emergency support, reports, and healthcare partners in one
+              secure digital ecosystem.
             </p>
 
             <div className="mt-6 grid gap-3 text-sm text-slate-300">
-              <ContactLine icon={<FiMail />} text="support@aapkadhyan.com" />
+              <ContactLine icon={<FiMail />} text="support@medample.com" />
               <ContactLine icon={<FiPhone />} text="+91 98765 43210" />
               <ContactLine
                 icon={<FiMapPin />}

@@ -1,4 +1,4 @@
-export const GOOGLE_TRANSLATE_LANGUAGE_KEY = "aapkadhyan_language";
+export const GOOGLE_TRANSLATE_LANGUAGE_KEY = "med_language";
 
 export const getSavedGoogleLanguage = () => {
   return localStorage.getItem(GOOGLE_TRANSLATE_LANGUAGE_KEY) || "en";
