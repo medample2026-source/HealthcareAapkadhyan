@@ -16,7 +16,7 @@ exports.sendContactMessage = async (req, res) => {
     const { name, email, phone, subject, message } = req.body;
 
     await transporter.sendMail({
-      from: `"Med Ample Contact" <${process.env.SMTP_USER}>`,
+      from: `"MedAmple Contact" <${process.env.SMTP_USER}>`,
       to: process.env.CONTACT_RECEIVER_EMAIL,
       replyTo: email,
       subject: `New Contact Message: ${subject}`,

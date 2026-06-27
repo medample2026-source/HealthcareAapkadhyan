@@ -12,7 +12,7 @@ const sendEmail = async ({ to, subject, html }) => {
   });
 
   await transporter.sendMail({
-    from: `"Med Ample" <${process.env.SMTP_USER}>`,
+    from: `"MedAmple" <${process.env.SMTP_USER}>`,
     to,
     subject,
     html,

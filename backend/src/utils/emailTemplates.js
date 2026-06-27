@@ -10,12 +10,12 @@ const baseTemplate = ({ title, body }) => `
   <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #0f172a;">
     <h2>${escapeHtml(title)}</h2>
     ${body}
-    <p style="margin-top: 24px; color: #64748b;">Med Ample Healthcare</p>
+    <p style="margin-top: 24px; color: #64748b;">MedAmple Healthcare</p>
   </div>
 `;
 
 const verificationEmail = ({ fullName, verifyUrl }) => ({
-  subject: "Verify your Med Ample email",
+  subject: "Verify your MedAmple email",
   html: baseTemplate({
     title: "Email Verification",
     body: `
@@ -27,9 +27,9 @@ const verificationEmail = ({ fullName, verifyUrl }) => ({
 });
 
 const welcomeEmail = ({ fullName }) => ({
-  subject: "Welcome to Med Ample",
+  subject: "Welcome to MedAmple",
   html: baseTemplate({
-    title: "Welcome to Med Ample",
+    title: "Welcome to MedAmple",
     body: `
       <p>Hello ${escapeHtml(fullName)},</p>
       <p>Your email has been verified successfully. You can now continue with your healthcare dashboard access.</p>
@@ -38,7 +38,7 @@ const welcomeEmail = ({ fullName }) => ({
 });
 
 const resetPasswordEmail = ({ fullName, resetUrl }) => ({
-  subject: "Reset your Med Ample password",
+  subject: "Reset your MedAmple password",
   html: baseTemplate({
     title: "Password Reset",
     body: `
