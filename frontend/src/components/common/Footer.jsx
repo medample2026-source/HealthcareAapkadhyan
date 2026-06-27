@@ -66,7 +66,9 @@ const Footer = () => {
               </div>
 
               <div>
-                <h2 className="text-3xl font-black">{BRAND_NAME}</h2>
+                <h2 className="notranslate text-3xl font-black" translate="no">
+                  {BRAND_NAME}
+                </h2>
                 <p className="text-xs font-semibold text-cyan-200">
                   Smart Healthcare Platform
                 </p>
@@ -74,7 +76,10 @@ const Footer = () => {
             </Link>
 
             <p className="mt-5 max-w-md text-sm leading-7 text-slate-300">
-              {BRAND_NAME} connects patients, doctors, hospitals, medical
+              <span className="notranslate" translate="no">
+                {BRAND_NAME}
+              </span>{" "}
+              connects patients, doctors, hospitals, medical
               stores, emergency support, reports, and healthcare partners in one
               secure digital ecosystem.
             </p>
@@ -163,7 +168,11 @@ const Footer = () => {
         <div className="mx-auto flex max-w-7xl flex-col gap-5 px-4 py-6 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
           <div>
             <p className="text-sm font-semibold text-slate-300">
-              Copyright 2026 {BRAND_NAME} Health Technologies. All rights
+              Copyright 2026{" "}
+              <span className="notranslate" translate="no">
+                {BRAND_NAME}
+              </span>{" "}
+              Health Technologies. All rights
               reserved.
             </p>
             <p className="mt-1 text-xs text-slate-500">

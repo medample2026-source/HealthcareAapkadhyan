@@ -175,7 +175,7 @@ const FeedbackPopup = () => {
                   onChange={handleChange}
                   rows="4"
                   required
-                  placeholder="What did you like about मेड Ample?"
+                  placeholder="What did you like about Med Ample?"
                   className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold outline-none transition focus:border-cyan-400 focus:bg-white focus:ring-4 focus:ring-cyan-100"
                 />
               </div>

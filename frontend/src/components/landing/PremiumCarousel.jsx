@@ -40,7 +40,7 @@ const slides = [
     id: 4,
     image:
       "https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=1600&auto=format&fit=crop",
-    title: "Partner With मेड Ample",
+    title: "Partner With Med Ample",
     description:
       "Collaborate with us as an organization, company, NGO, corporate wellness team, or healthcare technology partner.",
     badge: "Partnership",

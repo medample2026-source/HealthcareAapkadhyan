@@ -76,7 +76,12 @@ const Navbar = () => {
           </div>
 
           <div>
-            <h1 className="text-2xl font-black text-slate-900">{BRAND_NAME}</h1>
+            <h1
+              className="notranslate text-2xl font-black text-slate-900"
+              translate="no"
+            >
+              {BRAND_NAME}
+            </h1>
             <p className="text-[11px] font-semibold text-slate-500">
               Smart Healthcare
             </p>

@@ -58,7 +58,7 @@ const values = [
   },
   {
     title: "Access",
-    desc: "मेड Ample is built for everyone, including people in smaller cities and rural areas.",
+    desc: "Med Ample is built for everyone, including people in smaller cities and rural areas.",
     icon: MapPin,
   },
 ];
@@ -123,7 +123,7 @@ const journey = [
   {
     year: "Step 03",
     title: "Product Development",
-    desc: "We started building मेड Ample with modern web technologies, secure authentication, dashboards, and clean user experience.",
+    desc: "We started building Med Ample with modern web technologies, secure authentication, dashboards, and clean user experience.",
   },
   {
     year: "Step 04",
@@ -152,7 +152,7 @@ const About = () => {
               className="mx-auto mb-5 inline-flex items-center gap-2 rounded-full border border-cyan-200 bg-white px-4 py-2 text-xs font-bold uppercase tracking-wider text-cyan-700 shadow-sm"
             >
               <HeartPulse size={15} />
-              About मेड Ample
+              About Med Ample
             </motion.div>
 
             <motion.h1
@@ -170,7 +170,7 @@ const About = () => {
               variants={fadeUp}
               className="mx-auto mt-6 max-w-3xl text-base leading-8 text-slate-600 sm:text-lg"
             >
-              मेड Ample is a smart healthcare platform created to connect
+              Med Ample is a smart healthcare platform created to connect
               patients, doctors, hospitals, reports, and emergency help in one
               trusted digital space.
             </motion.p>
@@ -216,14 +216,14 @@ const About = () => {
             </h2>
 
             <p className="mt-5 leading-8 text-slate-600">
-              We started मेड Ample with a simple thought: healthcare should not
+              We started Med Ample with a simple thought: healthcare should not
               feel confusing when someone needs help. Many people face problems
               while finding doctors, checking hospital availability, managing
               reports, or getting emergency support.
             </p>
 
             <p className="mt-4 leading-8 text-slate-600">
-              मेड Ample is our effort to bring these important healthcare needs
+              Med Ample is our effort to bring these important healthcare needs
               into one clean and secure platform.
             </p>
           </motion.div>
@@ -278,7 +278,7 @@ const About = () => {
             </h2>
 
             <p className="mt-5 leading-8 text-slate-600">
-              We want मेड Ample to become a helpful digital companion for
+              We want Med Ample to become a helpful digital companion for
               patients, families, doctors, and hospitals.
             </p>
           </motion.div>
@@ -317,7 +317,7 @@ const About = () => {
             </p>
 
             <h2 className="mt-4 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
-              What drives मेड Ample forward.
+              What drives Med Ample forward.
             </h2>
           </div>
 
@@ -380,7 +380,7 @@ const About = () => {
             </div>
 
             <p className="max-w-xl leading-8 text-slate-600">
-              Every decision at मेड Ample is based on real healthcare needs,
+              Every decision at Med Ample is based on real healthcare needs,
               user trust, and simple digital access.
             </p>
           </div>
@@ -469,11 +469,11 @@ const About = () => {
             </p>
 
             <h2 className="mt-4 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
-              The vision behind मेड Ample.
+              The vision behind Med Ample.
             </h2>
 
             <p className="mt-4 leading-8 text-slate-600">
-              मेड Ample was founded with a clear purpose: to make healthcare
+              Med Ample was founded with a clear purpose: to make healthcare
               access simpler, faster, safer, and more connected for every
               family.
             </p>
@@ -489,7 +489,7 @@ const About = () => {
             <div className="relative min-h-[360px] overflow-hidden bg-cyan-100">
               <img
                 src="https://res.cloudinary.com/davsexxnb/image/upload/q_auto/f_auto/v1780432501/ChatGPT_Image_Jun_3_2026_02_04_45_AM_efjvax.png"
-                alt="Founder and owner of मेड Ample"
+                alt="Founder and owner of Med Ample"
                 className="h-full w-full object-cover"
               />
 
@@ -518,9 +518,9 @@ const About = () => {
               </h3>
 
               <p className="mt-5 leading-8 text-slate-600">
-                The founder and owner of मेड Ample started this platform with
+                The founder and owner of Med Ample started this platform with
                 the belief that healthcare should not feel complicated when
-                people need help the most. The idea behind मेड Ample is to
+                people need help the most. The idea behind Med Ample is to
                 bring patients, doctors, hospitals, medical reports,
                 appointments, and emergency support into one trusted digital
                 ecosystem.
@@ -530,7 +530,7 @@ const About = () => {
                 The owner’s vision is to create a platform that can help
                 families find reliable healthcare support, manage important
                 medical information, and respond faster during emergency
-                situations. मेड Ample is being built with a strong focus on
+                situations. Med Ample is being built with a strong focus on
                 trust, accessibility, security, and real-world healthcare
                 problems.
               </p>
@@ -588,7 +588,7 @@ const About = () => {
               </p>
 
               <h2 className="mt-4 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
-                The developers behind मेड Ample.
+                The developers behind Med Ample.
               </h2>
             </div>
 
@@ -670,7 +670,7 @@ const About = () => {
           </h2>
 
           <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-cyan-50 sm:text-base">
-            मेड Ample is our step toward a better healthcare experience for
+            Med Ample is our step toward a better healthcare experience for
             patients, families, doctors, and hospitals.
           </p>
 
@@ -679,7 +679,7 @@ const About = () => {
               to="/register"
               className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3 text-sm font-bold text-blue-600 transition hover:-translate-y-1 hover:bg-slate-50"
             >
-              Join मेड Ample
+              Join Med Ample
             </Link>
 
             <Link

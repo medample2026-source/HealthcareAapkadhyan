@@ -276,7 +276,9 @@ const DashboardLayout = () => {
               className="h-11 w-11 object-contain"
             />
           </div>
-          <span>{BRAND_NAME}</span>
+          <span className="notranslate" translate="no">
+            {BRAND_NAME}
+          </span>
         </div>
 
         <button
@@ -303,7 +305,12 @@ const DashboardLayout = () => {
           </div>
 
           <div>
-            <h2 className="text-xl font-bold text-slate-900">{BRAND_NAME}</h2>
+            <h2
+              className="notranslate text-xl font-bold text-slate-900"
+              translate="no"
+            >
+              {BRAND_NAME}
+            </h2>
             <p className="text-xs font-medium capitalize text-slate-500">
               {user?.role} panel
             </p>
