@@ -16,6 +16,7 @@ import {
   LocateFixed,
   QrCode,
   X,
+  MessageCircle,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import API from "../../api/axios";
@@ -118,6 +119,8 @@ const EmergencySOS = ({ mode = "public" }) => {
   const [copied, setCopied] = useState(false);
   const [patientLookupId, setPatientLookupId] = useState("");
   const [patientProfileLink, setPatientProfileLink] = useState("");
+  const [linkedPatientProfile, setLinkedPatientProfile] = useState(null);
+  const [patientProfileLoading, setPatientProfileLoading] = useState(false);
   const [scannerOpen, setScannerOpen] = useState(false);
 
   const hasLocation = location.latitude && location.longitude;
@@ -163,6 +166,35 @@ ${patientProfileLink ? `\nPatient QR Profile:\n${patientProfileLink}` : ""}
 
 Please provide urgent medical help.`;
 
+  const normalizePatientProfile = (profile) => ({
+    ...profile,
+    patientId: profile?.patientId || "",
+    fullName: profile?.fullName || profile?.patient?.fullName || "",
+    phone: profile?.phone || profile?.patient?.phone || "",
+    emergencyContactName: profile?.emergencyContactName || "",
+    emergencyContactNumber: profile?.emergencyContactNumber || "",
+    emergencyContactRelation: profile?.emergencyContactRelation || "",
+  });
+
+  const emergencyContactNumber =
+    linkedPatientProfile?.emergencyContactNumber || "";
+
+  const emergencyContactMessage = encodeURIComponent(emergencyMessage);
+
+  const whatsappNumber = emergencyContactNumber
+    ? emergencyContactNumber.replace(/\D/g, "").replace(/^0+/, "")
+    : "";
+
+  const whatsappHref = whatsappNumber
+    ? `https://wa.me/${
+        whatsappNumber.length === 10 ? `91${whatsappNumber}` : whatsappNumber
+      }?text=${emergencyContactMessage}`
+    : "";
+
+  const smsHref = emergencyContactNumber
+    ? `sms:${emergencyContactNumber}?body=${emergencyContactMessage}`
+    : "";
+
   const extractPatientIdFromQR = (value) => {
     if (!value) return "";
 
@@ -201,25 +233,61 @@ Please provide urgent medical help.`;
     )}`;
   };
 
-  const openPatientProfile = (value) => {
+  const fetchPatientProfileById = async (value, { openProfile = false } = {}) => {
     const patientId = extractPatientIdFromQR(value);
     const profileUrl = buildPatientCardUrl(value);
 
     if (!patientId || !profileUrl) {
       setError("Please scan QR or enter patient ID first.");
-      return;
+      return null;
     }
 
-    setError("");
-    setPatientLookupId(patientId);
-    setPatientProfileLink(profileUrl);
-    window.open(profileUrl, "_blank", "noopener,noreferrer");
+    try {
+      setPatientProfileLoading(true);
+      setError("");
+
+      const res = await API.get(
+        `/patients/qr/${encodeURIComponent(patientId.trim())}`,
+      );
+
+      const profile = normalizePatientProfile(res.data.patientProfile || {});
+
+      setLinkedPatientProfile(profile);
+      setPatientLookupId(profile.patientId || patientId);
+      setPatientProfileLink(profileUrl);
+
+      setForm((prev) => ({
+        ...prev,
+        fullName: prev.fullName || profile.fullName,
+        phone: prev.phone || profile.phone,
+      }));
+
+      if (openProfile) {
+        window.open(profileUrl, "_blank", "noopener,noreferrer");
+      }
+
+      return profile;
+    } catch (err) {
+      setLinkedPatientProfile(null);
+      setPatientProfileLink("");
+      setError(
+        err.response?.data?.message ||
+          "Patient profile not found. Please check the patient ID or scan again.",
+      );
+      return null;
+    } finally {
+      setPatientProfileLoading(false);
+    }
   };
 
-  const handlePatientQrScan = (decodedText) => {
+  const openPatientProfile = async (value) => {
+    await fetchPatientProfileById(value, { openProfile: true });
+  };
+
+  const handlePatientQrScan = async (decodedText) => {
     const patientId = extractPatientIdFromQR(decodedText);
     setPatientLookupId(patientId);
-    openPatientProfile(decodedText);
+    await fetchPatientProfileById(decodedText, { openProfile: true });
   };
 
   const getCurrentLocation = () => {
@@ -259,8 +327,42 @@ Please provide urgent medical help.`;
   };
 
   useEffect(() => {
-    getCurrentLocation();
+    const locationTimer = window.setTimeout(() => {
+      getCurrentLocation();
+    }, 0);
+
+    return () => window.clearTimeout(locationTimer);
   }, []);
+
+  useEffect(() => {
+    if (!isPatientMode) return;
+
+    const fetchMyPatientProfile = async () => {
+      try {
+        setPatientProfileLoading(true);
+
+        const res = await API.get("/patients/profile/me");
+        const profile = normalizePatientProfile(res.data.profile || {});
+
+        setLinkedPatientProfile(profile);
+
+        if (profile.patientId) {
+          setPatientLookupId(profile.patientId);
+          setPatientProfileLink(
+            `${window.location.origin}/patient-card/${encodeURIComponent(
+              profile.patientId,
+            )}`,
+          );
+        }
+      } catch {
+        setLinkedPatientProfile(null);
+      } finally {
+        setPatientProfileLoading(false);
+      }
+    };
+
+    fetchMyPatientProfile();
+  }, [isPatientMode]);
 
   const handleChange = (e) => {
     setForm((prev) => ({
@@ -414,6 +516,132 @@ Please provide urgent medical help.`;
             </div>
           </div>
         </div>
+
+        <section className="mb-8 rounded-[2rem] border border-red-100 bg-white p-5 shadow-xl shadow-red-100/40 sm:p-7">
+          <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-center">
+            <div>
+              <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-red-50 px-4 py-2 text-sm font-black text-red-700">
+                <Phone size={17} />
+                Emergency Relative
+              </div>
+
+              <h2 className="text-2xl font-black text-slate-900">
+                Call or message the registered emergency contact
+              </h2>
+
+              <p className="mt-2 max-w-3xl text-sm font-semibold leading-6 text-slate-500">
+                {linkedPatientProfile
+                  ? "This contact is fetched from the linked patient profile."
+                  : isPatientMode
+                    ? "Create or update your patient profile with emergency contact details to use this instantly."
+                    : "Scan a patient QR or enter a patient ID below to fetch the emergency contact."}
+              </p>
+            </div>
+
+            {patientProfileLoading && (
+              <div className="inline-flex items-center gap-2 rounded-2xl bg-cyan-50 px-4 py-3 text-sm font-black text-cyan-700">
+                <Loader2 className="animate-spin" size={18} />
+                Fetching profile
+              </div>
+            )}
+          </div>
+
+          <div className="mt-5 grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div className="rounded-3xl border border-slate-100 bg-slate-50 p-4">
+              {linkedPatientProfile ? (
+                <div className="grid gap-3 sm:grid-cols-3">
+                  <div>
+                    <p className="text-xs font-black uppercase text-slate-400">
+                      Patient
+                    </p>
+                    <p className="mt-1 text-sm font-black text-slate-900">
+                      {linkedPatientProfile.fullName || "Not added"}
+                    </p>
+                    <p className="mt-1 text-xs font-bold text-slate-500">
+                      {linkedPatientProfile.patientId}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-xs font-black uppercase text-slate-400">
+                      Relative
+                    </p>
+                    <p className="mt-1 text-sm font-black text-slate-900">
+                      {linkedPatientProfile.emergencyContactName ||
+                        "Not added"}
+                    </p>
+                    <p className="mt-1 text-xs font-bold text-slate-500">
+                      {linkedPatientProfile.emergencyContactRelation ||
+                        "Relation not added"}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-xs font-black uppercase text-slate-400">
+                      Contact Number
+                    </p>
+                    <p className="mt-1 text-sm font-black text-slate-900">
+                      {emergencyContactNumber || "Not added"}
+                    </p>
+                    {patientProfileLink && (
+                      <p className="mt-1 break-all text-xs font-bold text-cyan-700">
+                        {patientProfileLink}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-start gap-3 text-sm font-semibold text-slate-600">
+                  <AlertTriangle className="mt-0.5 shrink-0 text-orange-500" />
+                  <p>
+                    No emergency relative is loaded yet. Use the Patient QR / ID
+                    box in the SOS form to fetch the patient profile first.
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-3 lg:w-[430px]">
+              <a
+                href={emergencyContactNumber ? `tel:${emergencyContactNumber}` : undefined}
+                className={`inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-4 text-sm font-black shadow-lg transition ${
+                  emergencyContactNumber
+                    ? "bg-red-600 text-white shadow-red-100 hover:bg-red-700"
+                    : "pointer-events-none bg-slate-100 text-slate-400 shadow-none"
+                }`}
+              >
+                <Phone size={18} />
+                Call
+              </a>
+
+              <a
+                href={smsHref || undefined}
+                className={`inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-4 text-sm font-black shadow-lg transition ${
+                  smsHref
+                    ? "bg-orange-500 text-white shadow-orange-100 hover:bg-orange-600"
+                    : "pointer-events-none bg-slate-100 text-slate-400 shadow-none"
+                }`}
+              >
+                <MessageCircle size={18} />
+                SMS
+              </a>
+
+              <a
+                href={whatsappHref || undefined}
+                target="_blank"
+                rel="noreferrer"
+                className={`inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-4 text-sm font-black shadow-lg transition ${
+                  whatsappHref
+                    ? "bg-emerald-600 text-white shadow-emerald-100 hover:bg-emerald-700"
+                    : "pointer-events-none bg-slate-100 text-slate-400 shadow-none"
+                }`}
+              >
+                <MessageCircle size={18} />
+                WhatsApp
+              </a>
+            </div>
+          </div>
+        </section>
 
         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <form
@@ -679,6 +907,7 @@ Please provide urgent medical help.`;
                   onChange={(e) => {
                     setPatientLookupId(e.target.value);
                     setPatientProfileLink("");
+                    setLinkedPatientProfile(null);
                   }}
                   placeholder="Enter patient ID manually"
                   className="w-full rounded-2xl border border-orange-100 bg-white px-4 py-3 text-sm outline-none transition focus:border-orange-400 focus:ring-4 focus:ring-orange-100"
@@ -687,10 +916,15 @@ Please provide urgent medical help.`;
                 <button
                   type="button"
                   onClick={() => openPatientProfile(patientLookupId)}
+                  disabled={patientProfileLoading}
                   className="inline-flex items-center justify-center gap-2 rounded-2xl bg-orange-600 px-5 py-3 text-sm font-black text-white shadow-lg shadow-orange-100 transition hover:bg-orange-700"
                 >
-                  <ExternalLink size={17} />
-                  Open Profile
+                  {patientProfileLoading ? (
+                    <Loader2 size={17} className="animate-spin" />
+                  ) : (
+                    <ExternalLink size={17} />
+                  )}
+                  Fetch & Open
                 </button>
               </div>
 

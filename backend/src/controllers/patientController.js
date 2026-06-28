@@ -96,6 +96,26 @@ const applyPatientProfileImage = async (profile, file, folder) => {
   profile.profileImagePublicId = uploadedImage.public_id;
 };
 
+const getProfileByPatientId = (patientId) => {
+  const cleanPatientId = String(patientId || "").trim();
+
+  if (!cleanPatientId) {
+    return PatientProfile.findOne({ _id: null });
+  }
+
+  const escapedPatientId = cleanPatientId.replace(
+    /[.*+?^${}()|[\]\\]/g,
+    "\\$&",
+  );
+
+  return PatientProfile.findOne({
+    patientId: {
+      $regex: `^${escapedPatientId}$`,
+      $options: "i",
+    },
+  });
+};
+
 const buildLinkedPatientProfile = (profile) => ({
   patientId: profile.patientId,
   fullName: profile.patient?.fullName || "",
@@ -277,7 +297,7 @@ exports.getEmergencyProfile = async (req, res) => {
   try {
     const { patientId } = req.params;
 
-    const profile = await PatientProfile.findOne({ patientId }).populate(
+    const profile = await getProfileByPatientId(patientId).populate(
       "patient",
       "fullName phone",
     );
@@ -319,7 +339,7 @@ exports.getQrPatientProfile = async (req, res) => {
   try {
     const { patientId } = req.params;
 
-    const profile = await PatientProfile.findOne({ patientId }).populate(
+    const profile = await getProfileByPatientId(patientId).populate(
       "patient",
       "fullName email phone isBlocked",
     );
