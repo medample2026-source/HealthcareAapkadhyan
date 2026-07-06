@@ -9,6 +9,7 @@ import {
 } from "react-leaflet";
 import L from "leaflet";
 import { FiNavigation } from "react-icons/fi";
+import API from "../../api/axios";
 import "leaflet/dist/leaflet.css";
 
 const hospitalIcon = new L.Icon({
@@ -37,50 +38,30 @@ const NearbyHealthcare = ({ emergencyTheme = false }) => {
   const [userLocation, setUserLocation] = useState([23.2599, 77.4126]);
   const [places, setPlaces] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const fetchNearbyHealthcare = async (lat, lng) => {
     try {
       setLoading(true);
+      setError("");
 
       const radius = 5000;
 
-      const query = `
-        [out:json];
-        (
-          node["amenity"="hospital"](around:${radius},${lat},${lng});
-          node["amenity"="clinic"](around:${radius},${lat},${lng});
-          node["amenity"="doctors"](around:${radius},${lat},${lng});
-          node["amenity"="pharmacy"](around:${radius},${lat},${lng});
-          way["amenity"="hospital"](around:${radius},${lat},${lng});
-          way["amenity"="clinic"](around:${radius},${lat},${lng});
-          way["amenity"="doctors"](around:${radius},${lat},${lng});
-          way["amenity"="pharmacy"](around:${radius},${lat},${lng});
-        );
-        out center;
-      `;
-
-      const response = await fetch("https://overpass-api.de/api/interpreter", {
-        method: "POST",
-        body: query,
+      const response = await API.get("/nearby-healthcare", {
+        params: {
+          lat,
+          lng,
+          radius,
+        },
       });
 
-      const data = await response.json();
-
-      const results = data.elements
-        .map((item) => ({
-          id: `${item.type}-${item.id}`,
-          name: item.tags?.name || "Healthcare Location",
-          type: item.tags?.amenity || "healthcare",
-          lat: item.lat || item.center?.lat,
-          lng: item.lon || item.center?.lon,
-        }))
-        .filter((item) => item.lat && item.lng)
-        .slice(0, 25);
-
-      setPlaces(results);
+      setPlaces(response.data.places || []);
     } catch (error) {
-      console.log(error);
-      alert("Unable to fetch nearby healthcare locations");
+      setPlaces([]);
+      setError(
+        error.response?.data?.message ||
+          "Unable to fetch nearby healthcare locations.",
+      );
     } finally {
       setLoading(false);
     }
@@ -88,11 +69,12 @@ const NearbyHealthcare = ({ emergencyTheme = false }) => {
 
   const findNearbyHealthcare = () => {
     if (!navigator.geolocation) {
-      alert("Location is not supported by your browser");
+      setError("Location is not supported by your browser.");
       return;
     }
 
     setLoading(true);
+    setError("");
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -105,14 +87,14 @@ const NearbyHealthcare = ({ emergencyTheme = false }) => {
         fetchNearbyHealthcare(location[0], location[1]);
       },
       () => {
-        alert("Please allow location permission");
+        setError("Please allow location permission.");
         setLoading(false);
       },
       {
         enableHighAccuracy: true,
         timeout: 10000,
         maximumAge: 0,
-      }
+      },
     );
   };
 
@@ -141,16 +123,29 @@ const NearbyHealthcare = ({ emergencyTheme = false }) => {
 
         <button
           onClick={findNearbyHealthcare}
+          disabled={loading}
           className={`flex items-center gap-1 rounded-full px-4 py-2 text-[11px] font-bold uppercase shadow-md transition hover:-translate-y-0.5 hover:shadow-lg ${
             emergencyTheme
               ? "bg-white text-red-600"
               : "bg-red-600 text-white"
-          }`}
+          } disabled:cursor-not-allowed disabled:opacity-70`}
         >
           <FiNavigation />
           Find Nearby
         </button>
       </div>
+
+      {error && (
+        <p
+          className={`mb-3 rounded-2xl px-3 py-2 text-xs font-semibold ${
+            emergencyTheme
+              ? "bg-white/15 text-white"
+              : "bg-red-50 text-red-700"
+          }`}
+        >
+          {error}
+        </p>
+      )}
 
       <div className="h-[390px] overflow-hidden rounded-[1.5rem] bg-white">
         <MapContainer
@@ -191,12 +186,24 @@ const NearbyHealthcare = ({ emergencyTheme = false }) => {
                   <strong>{place.name}</strong>
                   <br />
                   <span className="capitalize">{place.type}</span>
+                  {place.address ? (
+                    <>
+                      <br />
+                      <span>{place.address}</span>
+                    </>
+                  ) : null}
+                  {place.distanceMeters ? (
+                    <>
+                      <br />
+                      <span>{Math.round(place.distanceMeters)} meters away</span>
+                    </>
+                  ) : null}
                   <br />
                   <a
                     href={`https://www.openstreetmap.org/directions?from=${userLocation[0]},${userLocation[1]}&to=${place.lat},${place.lng}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="mt-2 inline-block rounded-lg bg-slate-200 px-3 py-2 text-xs font-bold text-white"
+                    className="mt-2 inline-block rounded-lg bg-red-600 px-3 py-2 text-xs font-bold text-white"
                   >
                     Get Directions
                   </a>

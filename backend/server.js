@@ -28,6 +28,7 @@ const medicineRequestRoutes = require("./src/routes/medicineRequestRoutes");
 const medicalOwnerDashboardRoutes = require("./src/routes/medicalOwnerDashboardRoutes");
 const feedbackRoutes = require("./src/routes/feedbackRoutes");
 const partnerInquiryRoutes = require("./src/routes/partnerInquiryRoutes");
+const nearbyHealthcareRoutes = require("./src/routes/nearbyHealthcareRoutes");
 
 const app = express();
 
@@ -136,6 +137,7 @@ app.use("/api/medicine-requests", medicineRequestRoutes);
 app.use("/api/medical-owner-dashboard", medicalOwnerDashboardRoutes);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/partner-inquiries", partnerInquiryRoutes);
+app.use("/api/nearby-healthcare", nearbyHealthcareRoutes);
 
 // ==========================
 // 404 HANDLER
