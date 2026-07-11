@@ -30,11 +30,11 @@ const Navbar = () => {
     { name: "Doctors", path: "/doctors" },
     { name: "Hospitals", path: "/hospitals" },
     { name: "Medicines", path: "/medicines" },
+    { name: "Emergency SOS", path: "/emergency-sos" },
   ];
 
   const secondaryLinks = [
     { name: "Services", path: "/#services" },
-    { name: "Emergency SOS", path: "/emergency-sos" },
     { name: "Partners", path: "/partners" },
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
@@ -82,9 +82,6 @@ const Navbar = () => {
             >
               {BRAND_NAME}
             </h1>
-            <p className="text-[11px] font-semibold text-slate-500">
-              Smart Healthcare
-            </p>
           </div>
         </Link>
 

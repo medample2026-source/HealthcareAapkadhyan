@@ -69,9 +69,6 @@ const Footer = () => {
                 <h2 className="notranslate text-3xl font-black" translate="no">
                   {BRAND_NAME}
                 </h2>
-                <p className="text-xs font-semibold text-cyan-200">
-                  Smart Healthcare Platform
-                </p>
               </div>
             </Link>
 
@@ -89,7 +86,7 @@ const Footer = () => {
               <ContactLine icon={<FiPhone />} text="+91 98765 43210" />
               <ContactLine
                 icon={<FiMapPin />}
-                text="Bhopal, Madhya Pradesh, India"
+                text="Satna, Madhya Pradesh, India"
               />
             </div>
 

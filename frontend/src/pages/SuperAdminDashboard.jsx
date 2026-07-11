@@ -464,7 +464,10 @@ const SuperAdminDashboard = () => {
           )}
         </div>
 
-        <div className="rounded-[2rem] border border-white/70 bg-white/85 p-5 shadow-xl shadow-cyan-100/60 backdrop-blur-xl md:p-7">
+        <div
+          id="pending-applications"
+          className="scroll-mt-24 rounded-[2rem] border border-white/70 bg-white/85 p-5 shadow-xl shadow-cyan-100/60 backdrop-blur-xl md:p-7"
+        >
           <div className="mb-6 flex flex-col justify-between gap-3 md:flex-row md:items-center">
             <div>
               <h2 className="text-2xl font-black text-slate-900">

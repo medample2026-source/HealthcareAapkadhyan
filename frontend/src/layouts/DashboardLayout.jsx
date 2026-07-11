@@ -1,4 +1,4 @@
-import { Outlet, NavLink, useNavigate } from "react-router-dom";
+import { Outlet, NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   CalendarCheck,
@@ -27,6 +27,7 @@ import { BRAND_LOGO_URL, BRAND_NAME } from "../constants/brand";
 const DashboardLayout = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [open, setOpen] = useState(false);
   const [pendingMedicineRequests, setPendingMedicineRequests] = useState(0);
@@ -153,7 +154,9 @@ const DashboardLayout = () => {
     },
     {
       name: "Pending Applications",
-      path: "/super-admin-dashboard",
+      path: "/super-admin-dashboard#pending-applications",
+      activePath: "/super-admin-dashboard",
+      hash: "#pending-applications",
       icon: ShieldCheck,
     },
     {
@@ -291,11 +294,11 @@ const DashboardLayout = () => {
       </div>
 
       <aside
-        className={`fixed left-0 top-0 z-50 h-full w-72 border-r border-white/60 bg-white/90 p-5 shadow-xl backdrop-blur-xl transition-transform lg:translate-x-0 ${
+        className={`fixed left-0 top-0 z-50 flex h-screen w-72 flex-col border-r border-white/60 bg-white/90 p-5 shadow-xl backdrop-blur-xl transition-transform lg:translate-x-0 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="mb-8 flex items-center gap-3">
+        <div className="mb-6 flex shrink-0 items-center gap-3">
           <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-white shadow-sm">
             <img
               src={BRAND_LOGO_URL}
@@ -318,7 +321,7 @@ const DashboardLayout = () => {
         </div>
 
         {canMonitorSos && sosAlert.newCount > 0 && (
-          <div className="mb-5 rounded-3xl border border-red-100 bg-red-50 p-4">
+          <div className="mb-4 shrink-0 rounded-3xl border border-red-100 bg-red-50 p-4">
             <div className="flex items-start gap-3">
               <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-red-600 text-white">
                 <AlertTriangle size={18} />
@@ -336,7 +339,7 @@ const DashboardLayout = () => {
           </div>
         )}
 
-        <nav className="space-y-2">
+        <nav className="min-h-0 flex-1 space-y-2 overflow-y-auto pr-1">
           {links.map((item) => {
             const Icon = item.icon;
 
@@ -354,17 +357,24 @@ const DashboardLayout = () => {
                   item.name === "Pending Applications"
                 }
                 onClick={() => setOpen(false)}
-                className={({ isActive }) =>
-                  `relative flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition ${
-                    isActive
+                className={({ isActive }) => {
+                  const itemIsActive = item.hash
+                    ? location.pathname === item.activePath &&
+                      location.hash === item.hash
+                    : item.name === "Dashboard"
+                      ? isActive && !location.hash
+                      : isActive;
+
+                  return `relative flex min-h-12 items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition ${
+                    itemIsActive
                       ? "bg-gradient-to-r from-cyan-600 to-emerald-500 text-white shadow-lg shadow-cyan-100"
                       : "text-slate-600 hover:bg-cyan-50 hover:text-cyan-700"
-                  }`
-                }
+                  }`;
+                }}
               >
-                <Icon size={19} />
+                <Icon size={19} className="shrink-0" />
 
-                <span className="flex-1">{item.name}</span>
+                <span className="min-w-0 flex-1 truncate">{item.name}</span>
 
                 {showNormalBadge && (
                   <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-red-500 px-2 text-xs font-black text-white shadow-lg shadow-red-200">
@@ -385,7 +395,7 @@ const DashboardLayout = () => {
         <button
           type="button"
           onClick={handleLogout}
-          className="absolute bottom-5 left-5 right-5 flex items-center justify-center gap-2 rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-bold text-red-600 transition hover:bg-red-100"
+          className="mt-4 flex shrink-0 items-center justify-center gap-2 rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-bold text-red-600 transition hover:bg-red-100"
         >
           <LogOut size={18} />
           Logout

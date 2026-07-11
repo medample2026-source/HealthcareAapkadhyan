@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   FaUserDoctor,
-  FaBedPulse,
   FaTruckMedical,
   FaHospital,
   FaUserNurse,
   FaFileMedical,
-  FaVideo,
   FaBell,
   FaPrescriptionBottleMedical,
   FaQrcode,
@@ -67,6 +66,7 @@ const services = [
 const HealthcareServices = () => {
   const [visibleItems, setVisibleItems] = useState({});
   const sectionRef = useRef(null);
+  const previewServices = services.slice(0, 5);
 
   useEffect(() => {
     const elements = sectionRef.current?.querySelectorAll("[data-animate]");
@@ -134,7 +134,7 @@ const HealthcareServices = () => {
         </div>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 xl:grid-cols-5">
-          {services.map((service, index) => {
+          {previewServices.map((service, index) => {
             const Icon = service.icon;
             const id = `service-${index}`;
 
@@ -186,10 +186,13 @@ const HealthcareServices = () => {
               : "translate-y-10 opacity-0"
           }`}
         >
-          <button className="group inline-flex items-center gap-3 rounded-full bg-white/90 px-6 py-3 text-sm font-semibold text-slate-700 shadow-lg backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+          <Link
+            to="/services"
+            className="group inline-flex items-center gap-3 rounded-full bg-white/90 px-6 py-3 text-sm font-semibold text-slate-700 shadow-lg backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+          >
             Explore our all services
             <FaArrowRight className="text-blue-500 transition-transform duration-300 group-hover:translate-x-1" />
-          </button>
+          </Link>
         </div>
       </div>
     </section>

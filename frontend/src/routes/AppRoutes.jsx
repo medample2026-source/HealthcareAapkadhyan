@@ -7,6 +7,7 @@ import Landing from "../pages/Landing";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import About from "../pages/About";
+import Services from "../pages/Services";
 import Contact from "../pages/Contact";
 import Partners from "../pages/Partners";
 import ForgotPassword from "../pages/ForgotPassword";
@@ -65,6 +66,7 @@ const AppRoutes = () => {
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Landing />} />
         <Route path="/about" element={<About />} />
+        <Route path="/services" element={<Services />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/partners" element={<Partners />} />
         <Route path="/login" element={<Login />} />
